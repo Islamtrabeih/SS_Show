@@ -59,16 +59,16 @@ def plot(out, yy, mm, dd):
     fig.update_layout(title={'text': title, 'y': 0.94, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'bottom'},
                         font=dict(family="Courier New, monospace", size=11, color="black"))
     fig.update_traces(line_color='orange')
-    fig.update_layout(dragmode='drawopenpath', newshape_line_color='cyan')
-    fig.update_layout(xaxis=dict(rangeselector=dict(buttons=list([
-        dict(count=1, label="1m", step="month", stepmode="backward"), dict(count=6, label="6m", step="month", stepmode="backward"),
-        dict(count=1, label="1y", step="year", stepmode="backward"), dict(step="all")])), rangeslider=dict(visible=True), type="date"))
-    config = {'modeBarButtonsToAdd':['drawline', 'drawopenpath', 'drawclosedpath', 'drawcircle', 'drawrect', 'eraseshape'],
-                            'displaylogo': False, 'displayModeBar': True, "toImageButtonOptions": {"width": 1024, "height": 545}}
+    #fig.update_layout(dragmode='drawopenpath', newshape_line_color='cyan')
+    #fig.update_layout(xaxis=dict(rangeselector=dict(buttons=list([
+    #    dict(count=1, label="1m", step="month", stepmode="backward"), dict(count=6, label="6m", step="month", stepmode="backward"),
+    #    dict(count=1, label="1y", step="year", stepmode="backward"), dict(step="all")])), rangeslider=dict(visible=True), type="date"))
+    #config = {'modeBarButtonsToAdd':['drawline', 'drawopenpath', 'drawclosedpath', 'drawcircle', 'drawrect', 'eraseshape'],
+    #                        'displaylogo': False, 'displayModeBar': True, "toImageButtonOptions": {"width": 1024, "height": 545}}
     # fig.show()
     if not os.path.exists("images"):
         os.mkdir("images")
-    return fig.write_image("images/fig1.png", width=600, height=300)
+    return fig.write_image("images/fig1.png", width=700, height=350)
 
 
 def new():
@@ -136,19 +136,19 @@ def cycle_info(cycle):
             x[1].append(float(at.loc[i, 1]))
     title = f"{cycle}"
     fig = px.line(x, x=x[0], y=x[1], template="simple_white",labels={'y': 'SSN number', 'x': 'Date'})
-    fig.update_layout(title={'text': title, 'y': 0.94, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'bottom'},
+    fig.update_layout(title={'text': title, 'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'bottom'},
                         font=dict(family="Courier New, monospace", size=11, color="black"))
     fig.update_traces(line_color='orange')
-    fig.update_layout(dragmode='drawopenpath', newshape_line_color='cyan')
-    fig.update_layout(xaxis=dict(rangeselector=dict(buttons=list([
-        dict(count=1, label="1m", step="month", stepmode="backward"), dict(count=6, label="6m", step="month", stepmode="backward"),
-        dict(count=1, label="1y", step="year", stepmode="backward"), dict(step="all")])), rangeslider=dict(visible=True), type="date"))
-    config = {'modeBarButtonsToAdd':['drawline', 'drawopenpath', 'drawclosedpath', 'drawcircle', 'drawrect', 'eraseshape'],
-                            'displaylogo': False, 'displayModeBar': True, "toImageButtonOptions": {"width": 1024, "height": 545}}
+    #fig.update_layout(dragmode='drawopenpath', newshape_line_color='cyan')
+    #fig.update_layout(xaxis=dict(rangeselector=dict(buttons=list([
+    #    dict(count=1, label="1m", step="month", stepmode="backward"), dict(count=6, label="6m", step="month", stepmode="backward"),
+    #    dict(count=1, label="1y", step="year", stepmode="backward"), dict(step="all")])), rangeslider=dict(visible=True), type="date"))
+    #config = {'modeBarButtonsToAdd':['drawline', 'drawopenpath', 'drawclosedpath', 'drawcircle', 'drawrect', 'eraseshape'],
+    #                        'displaylogo': False, 'displayModeBar': True, "toImageButtonOptions": {"width": 1024, "height": 545}}
     # fig.show()
     if not os.path.exists("images"):
         os.mkdir("images")
     z = x[1].count(0)
     for i in x[1]:
         if i <= 0 : z += 1
-    return fig.write_image("images/fig1.png", width=600, height=300), x[1], max(x[1]), z, start, end, c[f"{cycle}_duration"]
+    return fig.write_image("images/fig1.png", width=480, height=200), x[1], max(x[1]), z, start, end, c[f"{cycle}_duration"]

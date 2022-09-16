@@ -21,7 +21,7 @@ def result():
         else:
             x = functions.search(yy, mm, dd)
             #print(x)
-            txt.insert(END, f' \number of SSN at {dd}.{mm}.{yy} = {x[1]} SSN \nthe data per day from 01.01.1910 is {x[0][1]}')
+            txt.insert(END, f'Number of SSN at {dd}.{mm}.{yy} = {x[1]} SSN \nThe data per day from 01.01.1910 is {x[0][1]}')
     except ValueError:
         txt.insert(END, 'Insert valid numbers')
 
@@ -32,17 +32,18 @@ def show_plot():
     #print(yy)
     mm = int(month1.get())
     if mm > 12 :
-        txt.insert(END, f' \nPlease insert valid month number \n')
+        txt.insert(END, f'\nPlease insert valid month number \n')
     #print(mm)
     dd = int(day1.get())
     if dd > 31 :
-        txt.insert(END, f' \nPlease insert valid day number \n')
+        txt.insert(END, f'\nPlease insert valid day number \n')
     txt.delete('0.0', END)
     d = functions.plot('out', yy, mm, dd)
     dirname = os.path.dirname(__file__)
     dd = PhotoImage(file=f"{dirname}/images/fig1.png")
     #txt.window_create("current", window = Label(txt, image = dd))
     txt.image_create("current", image = dd)
+
 
 def cycle_view():
     global dd
@@ -57,8 +58,16 @@ def cycle_view():
     mx = d[2]
     sl = d[3]
     txt2_1.image_create("current", image = dd)
-    txt2_2.insert(END, f' \nThe cycle data from {d[4]} to {d[5]} per day is {dt} \n')
-    txt2_0.insert(END, f' \nThe maximum SSN = {mx} sunspot\nThe spotless days = {sl} days \nThe cycle duration = {d[6]} years')
+    txt2_2.insert(END, f'The cycle data from {d[4]} to {d[5]} per day is {dt} \n')
+    txt2_0.insert(END,
+                  f'Start = {d[4]}\nEnd = {d[5]}\n')
+    if var_0.get()==True:
+        txt2_0.insert(END, f'The maximum SSN = {mx} sunspot\n')
+    if var_1.get()==True:
+        txt2_0.insert(END, f'The spotless days = {sl} days\n')
+    if var_2.get()==True:
+        txt2_0.insert(END, f'The cycle duration = {d[6]} years\n')
+
 
 def pro_save():
     try:
@@ -83,6 +92,10 @@ q.geometry('700x600')
 positionRight = int(q.winfo_screenwidth()/4)
 positionDown = int(q.winfo_screenheight()/10)
 q.geometry("+{}+{}".format(positionRight, positionDown))
+
+q.tk.call("source", "sun-valley/sv.tcl")
+#ttk.Style().theme_use('forest-light')
+q.tk.call("set_theme", "dark")
 
 # menubar
 menu_bar = Menu(q, background='black', foreground='white', activebackground='orange',
@@ -128,17 +141,17 @@ frame1_month = ttk.Label(my_Frame1,text="Month:",font=(10)).grid(column=2, row=1
 frame1_year = ttk.Label(my_Frame1,text="Year:",font=(10)).grid(column=4, row=1, padx=20, pady=20)
 
 # tab1 spinbox
-day1 = ttk.Spinbox(my_Frame1, from_= 1,to_= 31, width=10)
+day1 = ttk.Spinbox(my_Frame1, from_= 1,to_= 31, width=5)
 day1.grid(column=1, row=1, padx=20, pady=20)
-year1 =ttk.Spinbox(my_Frame1, from_= 1910,to_= 2030,width=10)
+year1 =ttk.Spinbox(my_Frame1, from_= 1910,to_= 2030,width=5)
 year1.grid(column=5, row=1, padx=20, pady=20)
-month1 = ttk.Spinbox(my_Frame1,values=(1,2,3,4,5,6,7,8,9,10,11,12),width=10)
+month1 = ttk.Spinbox(my_Frame1,values=(1,2,3,4,5,6,7,8,9,10,11,12),width=5)
 month1.grid(column=3, row=1, padx=20, pady=20)
 
 # tab1 buttons
-BTN_frame1 = ttk.Button(my_Frame1,text="Get Data",command=result,width=15).grid(column=0, columnspan=2, row=2, sticky="W", padx=5, pady=5)
-save_frame1 = ttk.Button(my_Frame1,text="Plot",command=show_plot,width=20).grid(column=0, columnspan=2, row=3, sticky="W", padx=5, pady=5)
-plot_frame1 = ttk.Button(my_Frame1,text="Save",command=pro_save,width=25).grid(column=0, columnspan=2, row=4, sticky="W", padx=5, pady=5)
+BTN_frame1 = ttk.Button(my_Frame1,text="Get Data",command=result,width=15).grid(column=0, row=2, columnspan=2, pady=10)
+save_frame1 = ttk.Button(my_Frame1,text="Plot",command=show_plot,width=15).grid(column=2, columnspan=2, row=2, pady=10)
+plot_frame1 = ttk.Button(my_Frame1,text="Save",command=pro_save,width=15).grid(column=4, row=2, columnspan=2, pady=10)
 #frame1_2 = ttk.Label(my_Frame1,text="",font=("arial",30,"bold")).grid(column=0, row=4)
 txt = Text(my_Frame1_1, height=18, relief=FLAT)
 txt.grid(column=0, columnspan=6, row=0, sticky="WE", padx=15, pady=15)
@@ -161,34 +174,43 @@ my_Frame2_1.grid(column=0, row=1, columnspan=2, sticky="WE", \
              padx=5, pady=0, ipadx=0, ipady=0)
 
 # tab1 labels
-frame2_l = ttk.Label(my_Frame2,text="Cycle:",font=(10)).grid(column=0, row=1, padx=0, pady=20, ipadx=0, ipady=0)
+frame2_l = ttk.Label(my_Frame2,text="Cycle:",font=(10)).grid(column=0, row=0, padx=0, pady=20, ipadx=0, ipady=0)
 
 # tab2 button
 var_t = StringVar()
 BTN_combox = ttk.Combobox(my_Frame2, textvariable=var_t)
 BTN_combox['values'] = [f"cycle{m}" for m in range(15, 26, 1)]
-BTN_combox.grid(column=1, row=1, padx=0, pady=20, ipadx=0, ipady=0)
-BTN_frame2 = ttk.Button(my_Frame2,text="Get Data",command=cycle_view,width=15).grid(column=2, columnspan=2, row=1, padx=0, pady=20, ipadx=0, ipady=0)
+BTN_combox.grid(column=1, row=0, padx=0, pady=20, ipadx=0, ipady=0)
+BTN_frame2 = ttk.Button(my_Frame2,text="Get Data",command=cycle_view,width=15).grid(column=2, columnspan=2, row=0, padx=0, pady=20, ipadx=0, ipady=0)
+var_0 = BooleanVar()
+togglebutton_0 = ttk.Checkbutton(my_Frame2, text='Maximum', variable=var_0, onvalue=1, style="Switch.TCheckbutton")
+togglebutton_0.grid(column=0, row=1, padx=0, pady=20, ipadx=0, ipady=0)
+var_1 = BooleanVar()
+togglebutton_1 = ttk.Checkbutton(my_Frame2, text='Spotless', variable=var_1, onvalue=1, style="Switch.TCheckbutton")
+togglebutton_1.grid(column=1, row=1, padx=0, pady=20, ipadx=0, ipady=0)
+var_2 = BooleanVar()
+togglebutton_2 = ttk.Checkbutton(my_Frame2, text='Duration', variable=var_2, onvalue=1, style="Switch.TCheckbutton")
+togglebutton_2.grid(column=2, row=1, padx=0, pady=20, ipadx=0, ipady=0)
 
 # text
-txt2_0 = Text(my_Frame2_1, height=15, relief=FLAT)
+txt2_0 = Text(my_Frame2_1, height=10, relief=FLAT)
 txt2_0.grid(column=0, row=0, columnspan=4, padx=15, pady=0, ipadx=0, ipady=0, sticky="WE")
-txt2_1 = Text(my_Frame2_1, height=15, relief=FLAT)
+txt2_1 = Text(my_Frame2_1, height=10, relief=FLAT)
 txt2_1.grid(column=4, row=0, columnspan=2, padx=15, pady=0, ipadx=0, ipady=0, sticky="WE")
-txt2_2 = Text(my_Frame2_1, height=10,relief=FLAT)
+txt2_2 = Text(my_Frame2_1, height=6,relief=FLAT)
 txt2_2.grid(column=0, columnspan=6, row=1, padx=15, pady=15, ipadx=0, ipady=0, sticky="WE")
 
 # weight
 for col in range(3):
     my_Frame2.columnconfigure(col, weight=1)
-my_Frame2.rowconfigure(5, weight=1)
+my_Frame2.rowconfigure(1, weight=1)
 for col in range(6):
     my_Frame2_1.columnconfigure(col, weight=1)
 my_Frame2_1.rowconfigure(6, weight=1)
 
 # main loop
-q.wm_minsize(625, 567)
-q.resizable(True, True)
+q.wm_minsize(620, 560)
+q.resizable(False, False)
 my_notebook.pack(expand=True, fill='both')
 #q.state('iconic')
 #q.wm_attributes("-transparentcolor", 'white')
